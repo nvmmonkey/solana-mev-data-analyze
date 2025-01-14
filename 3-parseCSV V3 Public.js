@@ -26,8 +26,7 @@ const csvWriter = createCsvWriter({
     { id: "botPercentage", title: "Bot %" },
     { id: "profit", title: "Profit" },
     { id: "profitUSD", title: "Profit in $" },
-    { id: "botMemo", title: "Bot Memo" },
-    { id: "txType", title: "Transaction Type" },
+    { id: "botMemo", title: "Bot Memo" }
   ],
 });
 
@@ -136,8 +135,7 @@ async function getTransactionData(txHash) {
       botPercentage: botPercentage.toFixed(2),
       profit: profit.toFixed(9),
       profitUSD: `$${profitUSD.toFixed(2)}`,
-      botMemo,
-      txType,
+      botMemo
     };
   } catch (error) {
     console.error(`Error processing tx ${txHash}: ${error.message}`);
@@ -180,8 +178,7 @@ async function processCSV() {
               ...txData,
               region: row.Region,
               timeSpent: row["Time Spent (ms)"],
-              quoteTime: row["Quote Time (ms)"],
-              txType: row["Type"] || "unknown",
+              quoteTime: row["Quote Time (ms)"]
             });
           }
 
