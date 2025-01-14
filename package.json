@@ -1,0 +1,20 @@
+{
+  "name": "mev-analysis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "��#\u0000 \u0000s\u0000o\u0000l\u0000m\u0000e\u0000v\u0000-\u0000a\u0000n\u0000a\u0000l\u0000y\u0000s\u0000i\u0000s\u0000\r\u0000 \u0000#\u0000 \u0000s\u0000o\u0000l\u0000m\u0000e\u0000v\u0000-\u0000a\u0000n\u0000a\u0000l\u0000y\u0000s\u0000i\u0000s\u0000\r\u0000 \u0000#\u0000 \u0000s\u0000o\u0000l\u0000m\u0000e\u0000v\u0000-\u0000a\u0000n\u0000a\u0000l\u0000y\u0000s\u0000i\u0000s\u0000\r\u0000 \u0000#\u0000 \u0000s\u0000o\u0000l\u0000m\u0000e\u0000v\u0000-\u0000a\u0000n\u0000a\u0000l\u0000y\u0000s\u0000i\u0000s\u0000\r\u0000 \u0000#\u0000 \u0000s\u0000o\u0000l\u0000m\u0000e\u0000v\u0000-\u0000a\u0000n\u0000a\u0000l\u0000y\u0000s\u0000i\u0000s\u0000\r\u0000 \u0000#\u0000 \u0000s\u0000o\u0000l\u0000m\u0000e\u0000v\u0000-\u0000a\u0000n\u0000a\u0000l\u0000y\u0000s\u0000i\u0000s\u0000\r\u0000 \u0000\"# solmev-analysis\" \r \"# sol-mev-analyze\"",
+  "dependencies": {
+    "@solana/web3.js": "^1.95.5",
+    "axios": "^1.7.7",
+    "csv-parser": "^3.0.0",
+    "csv-writer": "^1.6.0",
+    "dotenv": "^16.4.7",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {}
+}
