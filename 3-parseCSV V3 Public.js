@@ -1,9 +1,8 @@
-
 const axios = require("axios");
 const csv = require("csv-parser");
 const fs = require("fs");
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
-const bs58 = require("bs58"); // Add this package for base58 decoding
+const bs58 = require("bs58");
 require("dotenv").config();
 
 const HELIUS_API_KEY = process.env.HELIUS_API_KEY;
@@ -14,6 +13,7 @@ const csvWriter = createCsvWriter({
   path: "output.csv",
   header: [
     { id: "txHash", title: "Transaction Hash" },
+    { id: "type", title: "Type" },
     { id: "blockDate", title: "Block Date" },
     { id: "region", title: "Region" },
     { id: "timeSpent", title: "Time Spent (ms)" },
@@ -56,21 +56,15 @@ async function getTransactionData(txHash) {
       return null;
     }
 
-    // Get the bot's address (feePayer)
     const botAddress = data.feePayer;
-
-    // Track all WSOL movements
     let totalWsolIn = 0;
     let totalWsolOut = 0;
 
-    // Process all token transfers
     data.tokenTransfers.forEach((transfer) => {
       if (transfer.mint === WSOL_MINT) {
-        // WSOL coming to the bot
         if (transfer.toUserAccount === botAddress) {
           totalWsolIn += transfer.tokenAmount;
         }
-        // WSOL leaving the bot
         if (transfer.fromUserAccount === botAddress) {
           totalWsolOut += transfer.tokenAmount;
         }
@@ -83,7 +77,6 @@ async function getTransactionData(txHash) {
       }
     });
 
-    // Extract memo text
     let botMemo = "";
     if (data.instructions && data.instructions.length > 0) {
       const memoInstruction = data.instructions.find(
@@ -92,20 +85,17 @@ async function getTransactionData(txHash) {
 
       if (memoInstruction && memoInstruction.data) {
         try {
-          // First decode from base58
           const decodedBytes = bs58.decode(memoInstruction.data);
-          // Then convert to UTF-8 string
           botMemo = new TextDecoder().decode(decodedBytes);
         } catch (error) {
           console.warn(
             `Could not decode memo for tx ${txHash}: ${error.message}`
           );
-          botMemo = memoInstruction.data; // Fallback to original data if decoding fails
+          botMemo = memoInstruction.data;
         }
       }
     }
 
-    // Calculate fees from native transfers
     const jitoTip =
       data.nativeTransfers
         .filter((transfer) => transfer.fromUserAccount === botAddress)
@@ -168,13 +158,13 @@ async function processCSV() {
         const processedData = [];
         let processed = 0;
 
-        // Process one transaction at a time
         for (const row of results) {
           const txData = await getTransactionData(row["Transaction Hash"]);
 
           if (txData) {
             processedData.push({
               txHash: row["Transaction Hash"],
+              type: row["Type"],
               ...txData,
               region: row.Region,
               timeSpent: row["Time Spent (ms)"],
@@ -185,7 +175,6 @@ async function processCSV() {
           processed++;
           console.log(`Processed ${processed}/${results.length} transactions`);
 
-          // Wait 50ms between each transaction
           if (processed < results.length) {
             await sleep(50);
           }
@@ -204,7 +193,6 @@ async function processCSV() {
   });
 }
 
-// Run the processor
 console.log("Starting script...");
 processCSV()
   .then(() => {
